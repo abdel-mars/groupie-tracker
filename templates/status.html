@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 - Page Not Found!</title>
+    <link rel="stylesheet" href="/static/style-404.css" />
+    <link rel="icon" href="/images/plogo.png" sizes="16x16" />
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="/" class="logo-link">
+            <img src="/images/plogo.png" alt="Groupie Tracker Logo" />
+        </a>
+    </header>
+    <main>
+        <h1 class="title">Ooh!</h1>
+        <p class="status-message">{{.}}</p>
+        <button class="back-button" onclick="window.location.href='http://localhost:8080'">Go Back Home</button>
+    </main>
+    <footer class="footer">
+        <img src="/images/plogo.png" alt="Groupie Tracker Logo" class="logo" />
+        <p>© 2025 by eabderrahma. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

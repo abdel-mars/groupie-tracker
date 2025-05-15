@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{.Title}}</title>
+    <!-- Link to main stylesheet -->
+    <link rel="stylesheet" href="/static/style-dark.css?v=1" />
+</head>
+<body>
+    <header class="navbar">
+        <a href="/" class="logo-link">
+            <img src="/images/plogo.png" alt="Groupie Tracker Logo" class="logo" />
+        </a>
+    </header>
+    <main>
+        <!-- Back button to artists list -->
+        <a href="/" class="back-button">← Back to Artists</a>
+        <section class="artist-header">
+            <div class="artist-image">
+                <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" />
+            </div>
+            <div class="artist-basic-info">
+                <h2>{{.Artist.Name}}</h2>
+                <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+                <p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
+            </div>
+        </section>
+        <section class="artist-details">
+            <div class="column">
+                <h3>Members</h3>
+                <ul>
+                    {{range .Artist.Members}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Locations</h3>
+                <ul>
+                    {{range .Artist.LocationsList}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Concert Dates</h3>
+                <ul>
+                    {{range .Artist.ConcertDatesList}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Relations</h3>
+                <ul>
+                    {{range $key, $value := .Artist.RelationsMap}}
+                    <li><strong>{{$key}}:</strong><br />
+                        {{range $value}}
+                        {{.}}<br />
+                        {{end}}
+                    </li>
+                    {{end}}
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <img src="/images/plogo.png" alt="Groupie Tracker Logo" class="logo" />
+        <p>© 2025 by eabderrahma. All rights reserved.</p>
+    </footer>
+</body>
+</html>

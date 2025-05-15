@@ -1,0 +1,126 @@
+/* Basic reset and typography */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #222;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+a {
+    color: #007acc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.search-form {
+    margin-top: 1rem;
+}
+
+.search-form input[type="text"] {
+    padding: 0.5rem;
+    width: 60%;
+    max-width: 300px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    font-size: 1rem;
+}
+
+.search-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007acc;
+    color: white;
+    font-size: 1rem;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background-color: #005fa3;
+}
+
+main {
+    padding: 1rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.artists-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.artist-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 220px;
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.artist-card:hover {
+    transform: translateY(-5px);
+}
+
+.artist-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.artist-card h2 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.artist-detail img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #222;
+    color: white;
+    margin-top: 2rem;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .artists-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .artist-card {
+        width: 90%;
+    }
+
+    .search-form input[type="text"] {
+        width: 70%;
+    }
+}

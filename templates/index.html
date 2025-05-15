@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{.Title}}</title>
+    <!-- Link to main stylesheet -->
+    <link rel="stylesheet" href="/static/style-dark.css?v=1" />
+</head>
+<body>
+    <header class="navbar">
+        <a href="/" class="logo-link">
+            <img src="/images/plogo.png" alt="Groupie Tracker Logo" class="logo" />
+        </a>
+    </header>
+    <main>
+        <!-- Search form for filtering artists by name -->
+        <form method="get" action="/" class="search-bar">
+            <input
+                type="text"
+                name="search"
+                placeholder="Search artists by name..."
+                value="{{.SearchQuery}}"
+                class="search-input"
+            />
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <!-- Grid displaying artists -->
+        <div class="artists-grid">
+            {{if .Artists}}
+                {{range .Artists}}
+                <a href="/artist/{{.ID}}" class="artist">
+                    <img src="{{.Image}}" alt="{{.Name}}" />
+                    <div class="artist-info">
+                        <h2>{{.Name}}</h2>
+                        <p><strong>Creation Date:</strong> {{.CreationDate}}</p>
+                    </div>
+                </a>
+                {{end}}
+            {{else}}
+                <p style="text-align: center; color: #777;">No artists found.</p>
+            {{end}}
+        </div>
+    </main>
+    <footer class="footer">
+        <img src="/images/plogo.png" alt="Groupie Tracker Logo" class="logo" />
+        <p>© 2025 eabderrahma. All rights reserved.</p>
+    </footer>
+</body>
+</html>

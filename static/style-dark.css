@@ -1,0 +1,309 @@
+/* Unified dark theme style for the whole project */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+header, header.navbar {
+    background-color: #2a2a2a !important;
+    border: 3px solid rgb #bb86fc !important;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    color: #bb86fc;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+    .teammates {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        color: #aaa;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+.teammates {
+    font-size: 0.9rem;
+    color: #aaa;
+    display: none;
+}
+
+.mars-logo {
+    height: 45px;
+    width: auto;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* Hide mars-logo on phones */
+@media (max-width: 600px) {
+    .mars-logo {
+        display: none;
+    }
+}
+
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #bb86fc;
+    color: #121212;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .back-button {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+}
+
+.back-button:hover {
+    background-color: #9a67ea;
+}
+
+.artists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 0;
+}
+
+.artist {
+    background-color: #2c2c2c;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(187, 134, 252, 0.2);
+    text-align: center;
+    padding: 1.5rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.artist:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(187, 134, 252, 0.4);
+}
+
+.artist img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid #bb86fc;
+}
+
+.artist-info h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #bb86fc;
+}
+
+.artist-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.artist-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.artist-image img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #bb86fc;
+}
+
+.artist-basic-info {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.artist-basic-info h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #bb86fc;
+}
+
+.artist-basic-info p {
+    margin: 0.3rem 0;
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+.artist-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.column {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(187, 134, 252, 0.2);
+    text-align: center;
+}
+
+.column h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    border-bottom: 2px solid #bb86fc;
+    padding-bottom: 0.5rem;
+    color: #bb86fc;
+}
+
+.column ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0.5rem 0 0 0;
+    list-style-position: inside;
+}
+
+.column li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #ddd;
+}
+
+@media (max-width: 600px) {
+    .artist-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .artist-image img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .artist-basic-info {
+        display: block !important;
+        text-align: center !important;
+    }
+
+    .artist-basic-info h2,
+    .artist-basic-info p {
+        text-align: center !important;
+    }
+
+    .artists-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        padding: 1rem;
+    }
+
+    .artist img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .artist-info h2 {
+        font-size: 1rem;
+    }
+}
+
+/* Search bar styles */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo {
+    height: 90px;
+}
+
+.footer {
+    background-color: #1f1f1f;
+    color: #bb86fc;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    box-shadow: 0 -2px 4px rgba(255,255,255,0.1);
+}
+
+.search-input {
+    width: 300px;
+    max-width: 90vw;
+    padding: 0.5rem 1rem;
+    border: 2px solid #bb86fc;
+    border-radius: 8px 0 0 8px;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #9a67ea;
+}
+
+.search-button {
+    padding: 0.5rem 1rem;
+    border: 2px solid #bb86fc;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    background-color: #bb86fc;
+    color: #121212;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #9a67ea;
+}
