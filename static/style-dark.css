@@ -32,13 +32,6 @@ header, header.navbar {
     }
 }
 
-/* Hide mars-logo on phones */
-@media (max-width: 600px) {
-    .mars-logo {
-        display: none;
-    }
-}
-
 main {
     max-width: 900px;
     margin: 2rem auto;
@@ -132,14 +125,24 @@ main {
     margin-bottom: 2rem;
 }
 
-.artist-image img {
+@keyframes spin-disk {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .artist-image img {
     width: 200px;
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #bb86fc;
-}
-
+    animation: spin-disk 5s linear infinite;
+  }
+  
 .artist-basic-info {
     flex: 1;
     text-align: left;
