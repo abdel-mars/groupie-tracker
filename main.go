@@ -1,99 +1,128 @@
+
 package main
 
 import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 	groupietracker "groupie-tracker/fetching"
 )
 
-// main initializes the server, fetches artist data, and sets up HTTP handlers.
+// renderStatusPage is a helper function to render the status.html template with a message and HTTP status code
+func renderStatusPage(w http.ResponseWriter, statusCode int, message string) {
+	w.WriteHeader(statusCode)
+	statusTemplate, err := template.ParseFiles("templates/status.html")
+	if err != nil {
+		// If template parsing fails, fallback to plain text error
+		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	err = statusTemplate.Execute(w, message)
+	if err != nil {
+		// If template execution fails, fallback to plain text error
+		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+	}
+}
+
+// safeStaticHandler securely serves static files, returning a 404 page if file not found or path is invalid
+func safeStaticHandler(dir string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Full path to the requested file
+		path := filepath.Join(dir, r.URL.Path[len("/static/"):])
+
+		// Check if file exists and is not a directory
+		info, err := os.Stat(path)
+		if err != nil || info.IsDir() {
+			renderStatusPage(w, http.StatusNotFound, "404 Page Not Found")
+			return
+		}
+
+		// Serve the static file
+		http.ServeFile(w, r, path)
+	}
+}
+
+// safeImageHandler securely serves image files, returning a 404 page if file not found or path is invalid
+func safeImageHandler(dir string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Full path to the requested image file
+		path := filepath.Join(dir, r.URL.Path[len("/images/"):])
+
+		// Check if file exists and is not a directory
+		info, err := os.Stat(path)
+		if err != nil || info.IsDir() {
+			renderStatusPage(w, http.StatusNotFound, "404 Page Not Found")
+			return
+		}
+
+		// Serve the image file
+		http.ServeFile(w, r, path)
+	}
+}
+
 func main() {
-	// URL to fetch the list of artists
+	// URL to fetch artists data from external API
 	url := "https://groupietrackers.herokuapp.com/api/artists"
 
-	// Fetch artists data from the API
+	// Fetch artists data
 	artists, err := groupietracker.FetchArtists(url)
 	if err != nil {
 		log.Fatalf("Failed to fetch artists: %s", err)
 	}
 
-	// Serve static files from the ./static directory
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	// Set up handlers for serving static files and images securely
+	http.HandleFunc("/static/", safeStaticHandler("static"))
+	http.HandleFunc("/images/", safeImageHandler("images"))
 
-	// Serve images from the ./images directory
-	imgFs := http.FileServer(http.Dir("./images"))
-	http.Handle("/images/", http.StripPrefix("/images/", imgFs))
-
-	// Handle the root path "/"
+	// Root handler to display list of artists with optional search query
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Root handler called with URL path: %s", r.URL.Path)
 
-		// Parse the status template for error handling
-		statusTemplate, err := template.ParseFiles("templates/status.html")
-		if err != nil {
-			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-
 		// Only allow root path "/"
 		if r.URL.Path != "/" {
-			w.WriteHeader(http.StatusNotFound)
-			statusTemplate.Execute(w, "404 Page Not Found")
+			renderStatusPage(w, http.StatusNotFound, "404 Page Not Found")
 			return
 		}
 
 		// Only allow GET method
 		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusBadRequest)
-			statusTemplate.Execute(w, "400 Bad Request")
+			renderStatusPage(w, http.StatusBadRequest, "400 Bad Request")
 			return
 		}
 
 		// Get search query parameter
 		query := r.URL.Query().Get("search")
 
-		// Filter artists by search query
+		// Filter artists by name based on search query
 		filteredArtists := groupietracker.SearchArtistsByName(artists, query)
 
-		// Prepare data for the template
+		// Prepare data for template rendering
 		data := groupietracker.PageData{
-			Title:       "Artists List",
+			Title:       "Groupie-Tracker",
 			Artists:     filteredArtists,
 			SearchQuery: query,
 		}
 
-		// Parse the index template
+		// Parse and execute the index template with data
 		tmpl, err := template.ParseFiles("templates/index.html")
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			statusTemplate.Execute(w, "500 Internal Server Error")
+			renderStatusPage(w, http.StatusInternalServerError, "500 Internal Server Error")
 			return
 		}
-
-		// Execute the template with data
 		err = tmpl.Execute(w, data)
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			statusTemplate.Execute(w, "500 Internal Server Error")
+			renderStatusPage(w, http.StatusInternalServerError, "500 Internal Server Error")
 			return
 		}
 	})
 
-	// Handle artist detail pages "/artist/{id}"
+	// Artist detail handler to display details of a specific artist
 	http.HandleFunc("/artist/", func(w http.ResponseWriter, r *http.Request) {
-		// Parse the status template for error handling
-		statusTemplate, err := template.ParseFiles("templates/status.html")
-		if err != nil {
-			http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
-			return
-		}
-
 		// Only allow GET method
 		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusBadRequest)
-			statusTemplate.Execute(w, "400 Bad Request")
+			renderStatusPage(w, http.StatusBadRequest, "400 Bad Request")
 			return
 		}
 
@@ -105,34 +134,30 @@ func main() {
 		artist, err := groupietracker.FetchArtistDetails(artistID)
 		if err != nil {
 			log.Printf("Error fetching artist details: %v", err)
-			w.WriteHeader(http.StatusBadRequest)
-			statusTemplate.Execute(w, "400 Bad Request")
+			renderStatusPage(w, http.StatusBadRequest, "400 Bad Request")
 			return
 		}
 
-		// Prepare data for the template
+		// Prepare data for template rendering
 		data := groupietracker.ArtistPageData{
 			Title:  artist.Name,
 			Artist: artist,
 		}
 
-		// Parse the artist template
+		// Parse and execute the artist template with data
 		tmpl, err := template.ParseFiles("templates/artist.html")
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			statusTemplate.Execute(w, "500 Internal Server Error")
+			renderStatusPage(w, http.StatusInternalServerError, "500 Internal Server Error")
 			return
 		}
-
-		// Execute the template with data
 		err = tmpl.Execute(w, data)
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			statusTemplate.Execute(w, "500 Internal Server Error")
+			renderStatusPage(w, http.StatusInternalServerError, "500 Internal Server Error")
 			return
 		}
 	})
 
+	// Start the HTTP server on port 8080
 	log.Println("Server started on http://localhost:8080/")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
