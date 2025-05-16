@@ -30,26 +30,6 @@ header, header.navbar {
         align-items: flex-start;
         padding: 1rem;
     }
-    .teammates {
-        margin-top: 0.5rem;
-        font-size: 0.8rem;
-        color: #aaa;
-        width: 100%;
-        text-align: left;
-    }
-}
-
-.teammates {
-    font-size: 0.9rem;
-    color: #aaa;
-    display: none;
-}
-
-.mars-logo {
-    height: 45px;
-    width: auto;
-    vertical-align: middle;
-    display: inline-block;
 }
 
 /* Hide mars-logo on phones */
@@ -266,14 +246,6 @@ main {
     height: 90px;
 }
 
-.footer {
-    background-color: #1f1f1f;
-    color: #bb86fc;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
-    box-shadow: 0 -2px 4px rgba(255,255,255,0.1);
-}
 
 .search-input {
     width: 300px;
@@ -307,3 +279,30 @@ main {
 .search-button:hover {
     background-color: #9a67ea;
 }
+
+/* Layout wrapper to manage full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Content takes up remaining space, keeping footer down */
+  .layout-content {
+    flex: 1;
+  }
+  
+  /* Optional: Basic footer styles if not already styled */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background: #111;
+    color: #ccc;
+  }
+  
