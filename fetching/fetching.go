@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 // Artist represents the basic information about a music artist.
@@ -64,30 +65,50 @@ func FetchArtists(url string) ([]Artist, error) {
 	return artists, nil
 }
 
-// FetchArtistDetails fetches detailed information about an artist by ID.
+// FetchArtistDetails fetches detailed information about an artist by ID using goroutines for concurrency.
 func FetchArtistDetails(artistID string) (ArtistDetails, error) {
-	artistURL := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/artists/%s", artistID)
-	artist, err := FetchArtist(artistURL)
-	if err != nil {
-		return ArtistDetails{}, err
-	}
+	var wg sync.WaitGroup
+	var artist Artist
+	var locations []string
+	var dates []string
+	var relations map[string][]string
+	var err1, err2, err3, err4 error
 
-	locationsURL := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/locations/%s", artistID)
-	locations, err := FetchLocations(locationsURL)
-	if err != nil {
-		return ArtistDetails{}, err
-	}
+	wg.Add(4)
 
-	datesURL := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/dates/%s", artistID)
-	dates, err := FetchDates(datesURL)
-	if err != nil {
-		return ArtistDetails{}, err
-	}
+	go func() {
+		defer wg.Done()
+		artist, err1 = FetchArtist(fmt.Sprintf("https://groupietrackers.herokuapp.com/api/artists/%s", artistID))
+	}()
 
-	relationsURL := fmt.Sprintf("https://groupietrackers.herokuapp.com/api/relation/%s", artistID)
-	relations, err := FetchRelations(relationsURL)
-	if err != nil {
-		return ArtistDetails{}, err
+	go func() {
+		defer wg.Done()
+		locations, err2 = FetchLocations(fmt.Sprintf("https://groupietrackers.herokuapp.com/api/locations/%s", artistID))
+	}()
+
+	go func() {
+		defer wg.Done()
+		dates, err3 = FetchDates(fmt.Sprintf("https://groupietrackers.herokuapp.com/api/dates/%s", artistID))
+	}()
+
+	go func() {
+		defer wg.Done()
+		relations, err4 = FetchRelations(fmt.Sprintf("https://groupietrackers.herokuapp.com/api/relation/%s", artistID))
+	}()
+
+	wg.Wait()
+
+	if err1 != nil {
+		return ArtistDetails{}, err1
+	}
+	if err2 != nil {
+		return ArtistDetails{}, err2
+	}
+	if err3 != nil {
+		return ArtistDetails{}, err3
+	}
+	if err4 != nil {
+		return ArtistDetails{}, err4
 	}
 
 	details := ArtistDetails{
