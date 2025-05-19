@@ -4,13 +4,13 @@ Groupie Tracker is a web application built with Go that allows users to explore 
 
 ## Features
 
-- [Display a list of music artists](#) with images and basic info.
-- [Search artists by name](#) with case-insensitive filtering.
-- [View detailed artist information](#) including:
-  - [Members of the band](#)
-  - [Locations where the artist has performed](#)
-  - [Concert dates](#)
-  - [Relations with other artists](#)
+- Display a list of music artists with images and basic info.
+- Search artists by name with case-insensitive filtering.
+- View detailed artist information including:
+  - Members of the band
+  - Locations where the artist has performed
+  - Concert dates
+  - Relations with other artists
 - Responsive and clean user interface using HTML templates and CSS.
 - Error handling for invalid routes and requests.
 
@@ -42,19 +42,23 @@ Groupie Tracker is a web application built with Go that allows users to explore 
 ├── fetching/               # Package for fetching and processing artist data
 │   └── fetching.go
 ├── static/                 # Static assets (CSS files)
-│   ├── style.css
 │   ├── style-dark.css
 │   └── style-404.css
 ├── images/                 # Image assets used in the UI
-│   ├── mylogo.png
 │   └── plogo.png
 └── templates/              # HTML templates for rendering pages
     ├── index.html
     ├── artist.html
-    ├── search.html
-    ├── index-err.html
     └── status.html
 ```
+
+## API Endpoints Used
+
+- `https://groupietrackers.herokuapp.com/api/artists` - Fetches the list of all artists.
+- `https://groupietrackers.herokuapp.com/api/artists/{id}` - Fetches detailed information for a specific artist by ID.
+- `https://groupietrackers.herokuapp.com/api/locations/{id}` - Fetches locations for a specific artist.
+- `https://groupietrackers.herokuapp.com/api/dates/{id}` - Fetches concert dates for a specific artist.
+- `https://groupietrackers.herokuapp.com/api/relation/{id}` - Fetches relations for a specific artist.
 
 ## Author
 

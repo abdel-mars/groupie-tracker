@@ -1,3 +1,5 @@
+// Package groupietracker provides functions and types to fetch and process music artist data
+// from the Groupie Trackers API.
 package groupietracker
 
 import (
@@ -44,6 +46,7 @@ type ArtistPageData struct {
 }
 
 // FetchArtists fetches the list of artists from the given URL.
+// It performs an HTTP GET request and parses the JSON response into a slice of Artist.
 func FetchArtists(url string) ([]Artist, error) {
 	response, err := http.Get(url)
 	if err != nil {
@@ -66,6 +69,7 @@ func FetchArtists(url string) ([]Artist, error) {
 }
 
 // FetchArtistDetails fetches detailed information about an artist by ID using goroutines for concurrency.
+// It concurrently fetches basic artist info, locations, concert dates, and relations, then combines them.
 func FetchArtistDetails(artistID string) (ArtistDetails, error) {
 	var wg sync.WaitGroup
 	var artist Artist
@@ -122,6 +126,7 @@ func FetchArtistDetails(artistID string) (ArtistDetails, error) {
 }
 
 // FetchArtist fetches basic artist information from the given URL.
+// It performs an HTTP GET request and parses the JSON response into an Artist struct.
 func FetchArtist(url string) (Artist, error) {
 	response, err := http.Get(url)
 	if err != nil {
@@ -144,6 +149,7 @@ func FetchArtist(url string) (Artist, error) {
 }
 
 // FetchLocations fetches a list of locations from the given URL.
+// It performs an HTTP GET request and parses the JSON response into a slice of strings.
 func FetchLocations(url string) ([]string, error) {
 	response, err := http.Get(url)
 	if err != nil {
@@ -168,6 +174,7 @@ func FetchLocations(url string) ([]string, error) {
 }
 
 // FetchDates fetches a list of concert dates from the given URL.
+// It performs an HTTP GET request and parses the JSON response into a slice of strings.
 func FetchDates(url string) ([]string, error) {
 	response, err := http.Get(url)
 	if err != nil {
@@ -192,6 +199,7 @@ func FetchDates(url string) ([]string, error) {
 }
 
 // FetchRelations fetches a map of relations from the given URL.
+// It performs an HTTP GET request and parses the JSON response into a map.
 func FetchRelations(url string) (map[string][]string, error) {
 	response, err := http.Get(url)
 	if err != nil {
@@ -216,6 +224,7 @@ func FetchRelations(url string) (map[string][]string, error) {
 }
 
 // SearchArtistsByName filters artists by name using case-insensitive substring matching.
+// If the query is empty, it returns the original list.
 func SearchArtistsByName(artists []Artist, query string) []Artist {
 	if query == "" {
 		return artists

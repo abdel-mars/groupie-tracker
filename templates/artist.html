@@ -16,6 +16,8 @@
     <main>
         <!-- Back button to artists list -->
         <a href="/" class="back-button">← Back to Artists</a>
+
+        <!-- Artist header section with image and basic info -->
         <section class="artist-header">
             <div class="artist-image">
                 <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" />
@@ -26,6 +28,8 @@
                 <p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
             </div>
         </section>
+
+        <!-- Artist details section with members, locations, concert dates, and relations -->
         <section class="artist-details">
             <div class="column">
                 <h3>Members</h3>

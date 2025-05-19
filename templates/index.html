@@ -15,6 +15,7 @@
     </header>
 
     <main class="main-content">
+      <!-- Search form for filtering artists by name -->
       <form method="get" action="/" class="search-bar">
         <input
           type="text"
@@ -26,6 +27,7 @@
         <button type="submit" class="search-button">Search</button>
       </form>
 
+      <!-- Grid displaying artist cards -->
       <div class="artists-grid">
         {{if .Artists}}
           {{range .Artists}}
