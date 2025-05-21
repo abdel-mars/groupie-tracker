@@ -1,5 +1,8 @@
 # Groupie Tracker
 
+![Project Logo](images/plogo.png)
+
+
 Groupie Tracker is a web application built with Go that allows users to explore information about music artists. It fetches artist data from an external API and provides a user-friendly interface to browse, search, and view detailed information about artists, including their members, locations, concert dates, and relations.
 
 ## Features
