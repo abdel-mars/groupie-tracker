@@ -1,5 +1,3 @@
-// Package groupietracker provides functions and types to fetch and process music artist data
-// from the Groupie Trackers API.
 package groupietracker
 
 import (
@@ -46,7 +44,6 @@ type ArtistPageData struct {
 }
 
 // FetchArtists fetches the list of artists from the given URL.
-// It performs an HTTP GET request and parses the JSON response into a slice of Artist.
 func FetchArtists(url string) ([]Artist, error) {
 	response, err := http.Get(url)
 	if err != nil {
@@ -54,13 +51,14 @@ func FetchArtists(url string) ([]Artist, error) {
 	}
 	defer response.Body.Close()
 
-	body, err := io.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body) //read the raw json before unmarshalling
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var artists []Artist
-	err = json.Unmarshal(body, &artists)
+	err = json.Unmarshal(body, &artists) //Unmarshal turns json into Go objects
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %w", err)
 	}
@@ -68,8 +66,6 @@ func FetchArtists(url string) ([]Artist, error) {
 	return artists, nil
 }
 
-// FetchArtistDetails fetches detailed information about an artist by ID using goroutines for concurrency.
-// It concurrently fetches basic artist info, locations, concert dates, and relations, then combines them.
 func FetchArtistDetails(artistID string) (ArtistDetails, error) {
 	var wg sync.WaitGroup
 	var artist Artist
@@ -125,7 +121,7 @@ func FetchArtistDetails(artistID string) (ArtistDetails, error) {
 	return details, nil
 }
 
-// FetchArtist fetches basic artist information from the given URL.
+// FetchArtist fetches basic artist information
 // It performs an HTTP GET request and parses the JSON response into an Artist struct.
 func FetchArtist(url string) (Artist, error) {
 	response, err := http.Get(url)
@@ -148,7 +144,7 @@ func FetchArtist(url string) (Artist, error) {
 	return artist, nil
 }
 
-// FetchLocations fetches a list of locations from the given URL.
+// FetchLocations fetches a list of locations.
 // It performs an HTTP GET request and parses the JSON response into a slice of strings.
 func FetchLocations(url string) ([]string, error) {
 	response, err := http.Get(url)
@@ -198,7 +194,7 @@ func FetchDates(url string) ([]string, error) {
 	return dates.Dates, nil
 }
 
-// FetchRelations fetches a map of relations from the given URL.
+// FetchRelations fetches a map of relations.
 // It performs an HTTP GET request and parses the JSON response into a map.
 func FetchRelations(url string) (map[string][]string, error) {
 	response, err := http.Get(url)
