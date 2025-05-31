@@ -1,7 +1,3 @@
-
-// Package main implements the web server for the Groupie Tracker application.
-// It serves artist data fetched from an external API, renders HTML templates,
-// and handles static assets securely.
 package main
 
 import (
@@ -14,7 +10,6 @@ import (
 )
 
 // renderStatusPage renders the status.html template with a given message and HTTP status code.
-// It is used to display error or status messages to the user.
 func renderStatusPage(w http.ResponseWriter, statusCode int, message string) {
 	w.WriteHeader(statusCode)
 	statusTemplate, err := template.ParseFiles("templates/status.html")
@@ -32,7 +27,6 @@ func renderStatusPage(w http.ResponseWriter, statusCode int, message string) {
 
 // safeStaticHandler returns an HTTP handler function that securely serves static files
 // from the specified directory. If the requested file does not exist or is a directory,
-// it responds with a 404 status page.
 func safeStaticHandler(dir string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Construct the full file path by joining the directory and the requested URL path.
@@ -49,10 +43,6 @@ func safeStaticHandler(dir string) http.HandlerFunc {
 		http.ServeFile(w, r, path)
 	}
 }
-
-// safeImageHandler returns an HTTP handler function that securely serves image files
-// from the specified directory. If the requested image does not exist or is a directory,
-// it responds with a 404 status page.
 func safeImageHandler(dir string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Construct the full image file path by joining the directory and the requested URL path.
@@ -71,7 +61,6 @@ func safeImageHandler(dir string) http.HandlerFunc {
 }
 
 func main() {
-	// URL of the external API to fetch artists data.
 	url := "https://groupietrackers.herokuapp.com/api/artists"
 
 	// Fetch the list of artists from the API.
@@ -165,7 +154,6 @@ func main() {
 		}
 	})
 
-	// Start the HTTP server on port 8080.
-	log.Println("Server started on http://localhost:8080/")
+	log.Println("\033[32mWelcom To Groupie-Tracker\033[0m\nServer started on http://localhost:8080/")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
