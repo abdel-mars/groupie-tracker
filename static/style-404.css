@@ -69,8 +69,6 @@ p.status-message {
     background-color: #4a1575;
 }
 
-/* Footer styles from style-dark.css */
-
 .footer {
     background-color: #1f1f1f;
     color: #bb86fc;
@@ -85,7 +83,6 @@ p.status-message {
     height: 80px;
 }
 
-/* Responsive styles */
 
 @media (max-width: 768px) {
     main {
